@@ -31,21 +31,29 @@
 (defn- timestamp->date-time [t]
   (coerce/from-date t))
 
-(defentity timesheets
-  (prepare (fn [{start :start end :end :as v}]
-               (-> v
-                   (assoc :start (coerce/to-timestamp start))
-                   (assoc :end (if end
-                                   (coerce/to-timestamp end))))))
-  (transform (fn [{start :start end :end :as v}]
-               (-> v
-                   (assoc :start (timestamp->date-time start))
-                   (assoc :end (if end
-                                 (timestamp->date-time end)))))))
+(defentity timesheets)
+
+(defn- prepare-ts [{start :start end :end :as m}]
+  (-> m
+      (assoc :start (coerce/to-timestamp start))
+      (assoc :end (if end
+                    (coerce/to-timestamp end)))))
+
+(defn- transform-ts
+  [{start :start end :end :as m}]
+  (-> m
+      (assoc :start (timestamp->date-time start))
+      (assoc :end (if end
+                    (timestamp->date-time end)))))
 
 (defn log-time [timelog]
   (insert timesheets
-          (values timelog)))
+          (values (prepare-ts timelog))))
+
+#_
+((comp first vals)
+   (log-time {:desc "lsdffg"
+              :start (t/now)}))
 
 (defn rm-log [id]
   (delete timesheets
@@ -54,9 +62,8 @@
 (defn timelog-day
   "Produces the seq of timesheet entries for the day d."
   [d]
-  (-> (select* timesheets)
-      (where (and (= (sqlfn dayofmonth :start) (t/day d))
-                  (= (sqlfn month :start) (t/month d))
-                  (= (sqlfn year :start) (t/year d))))
-      ;as-sql
-      exec))
+  (let [query (-> (select* timesheets)
+                  (where (and (= (sqlfn dayofmonth :start) (t/day d))
+                              (= (sqlfn month :start) (t/month d))
+                              (= (sqlfn year :start) (t/year d)))))]
+    (map transform-ts (exec query))))
