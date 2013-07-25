@@ -80,9 +80,7 @@
         sum (reduce #(assoc %1 (key %2) (sum-durations (val %2)))
                     {}
                     grouped)]
-    (reduce conj [] (map #(assoc {}
-                          :desc (key %)
-                          :duration (val %))
+    (reduce conj [] (map #(assoc {} :desc (key %) :duration (val %))
                          sum))))
 
 (comment
