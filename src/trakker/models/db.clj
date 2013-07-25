@@ -50,10 +50,26 @@
   (insert timesheets
           (values (prepare-ts timelog))))
 
-#_
-((comp first vals)
+
+(defn stop-tracking [id dt]
+  (update timesheets
+          (set-fields {:end (coerce/to-timestamp dt)})
+          (where {:id id})))
+
+(comment
+  (update timesheets
+          (set-fields {:end nil})
+          (where {:id 2}))
+
+  (stop-tracking 2 (t/now))
+
+  (select timesheets)
+
+  (map rm-log (filter #(> % 2) (map :id (select timesheets))))
+
+  ((comp first vals)
    (log-time {:desc "lsdffg"
-              :start (t/now)}))
+              :start (t/now)})))
 
 (defn rm-log [id]
   (delete timesheets

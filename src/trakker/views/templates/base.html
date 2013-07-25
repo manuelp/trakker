@@ -1,11 +1,11 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>Welcome to trakker</title>		
+		<title>Welcome to trakker</title>
 		<link href="{{context}}/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>
 		<link href="{{context}}/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"></link>
 		<link href="{{context}}/css/screen.css" rel="stylesheet" type="text/css"></link>
-		
+
 		<script type="text/javascript">
 		var context = "{{context}}";
 		</script>
@@ -14,20 +14,20 @@
 
 	</head>
 	<body>
-	 <div id="wrap">	
-			
+	 <div id="wrap">
+
 {% block navbar %}
 
 			<div class="navbar navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container-fluid">
-						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> 
-							<span class="icon-bar"></span> 
-							<span class="icon-bar"></span> 
+						<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 							<span class="icon-bar"></span>
-						</a> 
-						<a class="brand" href="/">trakker</a> 
-						
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</a>
+						<a class="brand" href="/">trakker</a>
+
 {% if user-id %}
 
 						<div class="btn-group pull-right">
@@ -40,24 +40,24 @@
 								<li><a href="{{context}}/logout">Sign Out</a></li>
 							</ul>
 						</div>
-						
+
 {% else %}
 
-						<ul class="nav pull-right">	
-						<li>				
+						<ul class="nav pull-right">
+						<li>
 								<form action="{{context}}/login" class="navbar-form" method="POST">
-									<input class="span2" 
-									       id="id" 
-									       name="id" 
+									<input class="span2"
+									       id="id"
+									       name="id"
 									       placeholder="user id"
-										   style="margin-right: 5px" 
+										   style="margin-right: 5px"
 										   type="text"/>
-									 <input class="span2" 
-									        id="pass" 
-									        name="pass" 
+									 <input class="span2"
+									        id="pass"
+									        name="pass"
 									        placeholder="password"
-										    style="margin-right: 5px" 
-										    type="password"/> 
+										    style="margin-right: 5px"
+										    type="password"/>
 									<input class="btn" type="submit" value="Login"></input>
 								</form>
 								</li>
@@ -65,33 +65,33 @@
 									<a href="{{context}}/register">Register</a>
 								</li>
 						</ul>
-						
+
 {% endif %}
 
 						<div class="nav-collapse"></div> <!--/.nav-collapse -->
 					</div>
 				</div>
 			</div>
-			
+
 {% endblock %}
 
-		
+
 			<div class="container-fluid">
-				
+
 {% block content %}
- 
-				
+
+
 {% endblock %}
 
 			</div>
 			 <div id="push"></div>
 		</div>
-	
+
 		<div id="footer">
-        	 <div class="container">                
-            	 <p class="muted footer-text">Footer content.</p>
+        	 <div class="container">
+            	 <p class="muted footer-text">Copyright &copy; <a href="http://manuelp.herokuapp.com">Manuel Paccagnella</a> &mdash; Distributed under the <a href="http://www.mozilla.org/MPL/2.0/">MPL 2.0</a> license.</p>
          	</div>
     	</div>
-	    
+
 	</body>
 </html>

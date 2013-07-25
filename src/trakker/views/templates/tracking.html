@@ -1,0 +1,15 @@
+{% extends "trakker/views/templates/base.html" %}
+
+{% block content %}
+
+<ul>
+  <li><time>{{start|date:"dd/MM/yyyy HH:mm"}}</time></li>
+  <li>Task: {{desc}}</li>
+</ul>
+
+<form action="stop" method="POST">
+  <input type="hidden" name="id" value="{{id}}">
+  <input type="submit" class="btn btn-primary" value="Stop">
+</form>
+
+{% endblock %}
