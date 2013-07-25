@@ -1,0 +1,18 @@
+{% extends "trakker/views/templates/base.html" %}
+
+{% block content %}
+
+<table class="table">
+  <tr>
+    <th>Task</th>
+    <th>Minutes</th>
+  </tr>
+  {% for task in tasks %}
+  <tr>
+    <td>{{ task.desc }}</td>
+    <td>{{ task.duration }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}

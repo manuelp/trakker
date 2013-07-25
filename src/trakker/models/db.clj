@@ -56,12 +56,52 @@
           (set-fields {:end (coerce/to-timestamp dt)})
           (where {:id id})))
 
+
+(defn calc-duration
+  "Produces a new task map with an additional :duration in minutes
+  calculated using :start and :end timestamps."
+  [entry]
+  (assoc entry
+    :duration (t/in-minutes (t/interval (:start entry) (:end entry)))))
+
+(defn sum-durations
+  "Produces the sum of the durations in minutes of all the tasks in the seq."
+  [coll]
+  (->> coll
+       (map calc-duration)
+       (map :duration)
+       (reduce +)))
+
+(defn timelog-day-aggregated
+  "Produces a map (task description -> duration in minutes), aggregating
+  all the time logged in the specified date by description."
+  [dt]
+  (let [grouped (group-by :desc (timelog-day dt))
+        sum (reduce #(assoc %1 (key %2) (sum-durations (val %2)))
+                    {}
+                    grouped)]
+    (reduce conj [] (map #(assoc {}
+                          :desc (key %)
+                          :duration (val %))
+                         sum))))
+
 (comment
   (update timesheets
           (set-fields {:end nil})
           (where {:id 2}))
 
   (stop-tracking 2 (t/now))
+
+  (map :id (select timesheets))
+
+  (let [grouped (group-by :desc (timelog-day (t/today)))]
+    (reduce #(assoc %1 (key %2) (reduce + (map :duration (map calc-duration (val %2)))))
+            {}
+            grouped))
+
+  (timelog-day (t/today))
+
+  (timelog-day-aggregated (t/now))
 
   (select timesheets)
 

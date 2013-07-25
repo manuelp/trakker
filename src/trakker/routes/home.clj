@@ -29,15 +29,8 @@
   (do (db/stop-tracking id (t/now))
       (resp/redirect "/")))
 
-(defn- calc-duration
-  "Produces a new task map with an additional :duration in minutes
-  calculated using :start and :end timestamps."
-  [entry]
-  (assoc entry
-    :duration (t/in-minutes (t/interval (:start entry) (:end entry)))))
-
 (defn report-day [dt]
-  (let [tasks (map calc-duration (db/timelog-day dt))]
+  (let [tasks (map db/calc-duration (db/timelog-day dt))]
     (layout/render "report-day.html"
                    {:tasks tasks})))
 
@@ -46,9 +39,14 @@
 
   (map calc-duration (db/timelog-day (t/now))))
 
+(defn report-day-aggregated [dt]
+  (layout/render "report-day-aggregated.html"
+                 {:tasks (db/timelog-day-aggregated dt)}))
+
 (defroutes home-routes
   (GET "/" [] (home-page))
   (POST "/" [desc] (start-tracking desc))
   (POST "/stop" [id] (stop-tracking id))
   (GET "/reports/today" [] (report-day (t/now)))
+  (GET "/reports/today-aggregated" [] (report-day-aggregated (t/now)))
   (GET "/about" [] (about-page)))
