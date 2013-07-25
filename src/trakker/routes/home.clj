@@ -29,8 +29,13 @@
   (do (db/stop-tracking id (t/now))
       (resp/redirect "/")))
 
+(defn reports-day [dt]
+  (layout/render "report-day.html"
+                 {:tasks (db/timelog-day dt)}))
+
 (defroutes home-routes
   (GET "/" [] (home-page))
   (POST "/" [desc] (start-tracking desc))
   (POST "/stop" [id] (stop-tracking id))
+  (GET "/reports/today" [] (reports-day (t/now)))
   (GET "/about" [] (about-page)))

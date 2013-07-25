@@ -1,0 +1,20 @@
+{% extends "trakker/views/templates/base.html" %}
+
+{% block content %}
+
+<table class="table">
+  <tr>
+    <th>Start</th>
+    <th>End</th>
+    <th>Task</th>
+  </tr>
+  {% for task in tasks %}
+  <tr>
+    <td>{{ task.start|date:"dd/MM/yyyy HH:mm" }}</td>
+    <td>{{ task.end|date:"dd/MM/yyyy HH:mm" }}</td>
+    <td>{{ task.desc }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+{% endblock %}
