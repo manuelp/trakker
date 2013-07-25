@@ -18,14 +18,17 @@
   </ul>
 </div>
 
-{% if error %}
-<p>{{error}}</p>
-{% endif %}
-
 <form action="/" method="POST">
     Task:
   <input type="text" name="desc">
   <input type="submit" value="Start" class="btn btn-primary">
 </form>
+
+{% if error %}
+<div class="alert">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <p class="text-error">{{error}}</p>
+</div>
+{% endif %}
 
 {% endblock %}

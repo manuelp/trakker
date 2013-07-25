@@ -7,12 +7,14 @@
     <th>Start</th>
     <th>End</th>
     <th>Task</th>
+    <th>Minutes</th>
   </tr>
   {% for task in tasks %}
   <tr>
     <td>{{ task.start|date:"dd/MM/yyyy HH:mm" }}</td>
     <td>{{ task.end|date:"dd/MM/yyyy HH:mm" }}</td>
     <td>{{ task.desc }}</td>
+    <td>{{ task.duration }}</td>
   </tr>
   {% endfor %}
 </table>
