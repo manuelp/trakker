@@ -56,6 +56,14 @@
           (set-fields {:end (coerce/to-timestamp dt)})
           (where {:id id})))
 
+(defn timelog-day
+  "Produces the seq of timesheet entries for the day d."
+  [d]
+  (let [query (-> (select* timesheets)
+                  (where (and (= (sqlfn dayofmonth :start) (t/day d))
+                              (= (sqlfn month :start) (t/month d))
+                              (= (sqlfn year :start) (t/year d)))))]
+    (map transform-ts (exec query))))
 
 (defn calc-duration
   "Produces a new task map with an additional :duration in minutes
@@ -112,12 +120,3 @@
 (defn rm-log [id]
   (delete timesheets
           (where {:id id})))
-
-(defn timelog-day
-  "Produces the seq of timesheet entries for the day d."
-  [d]
-  (let [query (-> (select* timesheets)
-                  (where (and (= (sqlfn dayofmonth :start) (t/day d))
-                              (= (sqlfn month :start) (t/month d))
-                              (= (sqlfn year :start) (t/year d)))))]
-    (map transform-ts (exec query))))
