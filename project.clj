@@ -1,6 +1,6 @@
 (defproject
   trakker
-  "0.1.0-SNAPSHOT"
+  "0.1.0"
   :dependencies
   [[org.clojure/clojure "1.5.1"]
    [lib-noir "0.6.6"]
