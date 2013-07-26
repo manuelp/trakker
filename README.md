@@ -1,6 +1,6 @@
 # trakker
 
-FIXME
+A web based time tracker.
 
 ## Prerequisites
 
@@ -16,4 +16,4 @@ To start a web server for the application, run:
 
 ## License
 
-Copyright © 2013 FIXME
+Copyright © 2013 Manuel Paccagnella, distributed under the [MPL 2.0](http://www.mozilla.org/MPL/2.0/) license

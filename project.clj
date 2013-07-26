@@ -31,10 +31,10 @@
     {:open-browser? false, :stacktraces? false, :auto-reload? false}},
    :dev
    {:dependencies [[ring-mock "0.1.5"] [ring/ring-devel "1.1.8"]]}}
-  :url
-  "http://example.com/FIXME"
+  :url "https://github.com/manuelp/trakker"
   :plugins
   [[lein-ring "0.8.5"]]
-  :description
-  "FIXME: write description"
+  :description "Web based time tracker."
+  :license {:name "Mozilla Public License 2.0"
+            :url "http://www.mozilla.org/MPL/2.0/"}
   :min-lein-version "2.0.0")
