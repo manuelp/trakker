@@ -2,9 +2,9 @@
 
 {% block content %}
 <ul class="nav nav-tabs">
-  <li><a href="/">Home</a></li>
-  <li class="active"><a href="/reports/today">Today</a></li>
-  <li><a href="/reports/today-aggregated">Today (aggregated)</a></li>
+  <li><a href="{{ context }}/">Home</a></li>
+  <li class="active"><a href="{{ context }}/reports/today">Today</a></li>
+  <li><a href="{{ context }}/reports/today-aggregated">Today (aggregated)</a></li>
 </ul>
 
 <table class="table">
@@ -23,9 +23,9 @@
     <td>{{ task.duration }}</td>
     <td>
       {% if not task.end %}
-      <a href="/tracking/{{ task.id }}" class="btn">Edit</a>
+      <a href="{{ context }}/tracking/{{ task.id }}" class="btn">Edit</a>
       {% endif %}
-      <a href="/delete/{{ task.id }}" class="btn btn-danger">Delete</a>
+      <a href="{{ context }}/delete/{{ task.id }}" class="btn btn-danger">Delete</a>
     </td>
   </tr>
   {% endfor %}

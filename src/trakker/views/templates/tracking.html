@@ -20,10 +20,10 @@
   </tr>
 </table>
 
-<form action="/stop" method="POST">
+<form action="{{context}}/stop" method="POST">
   <input type="hidden" name="id" value="{{id}}">
   <input type="submit" class="btn btn-primary" value="Stop">
-  <a class="btn btn-danger" href="/cancel/{{id}}">Cancel</a>
+  <a class="btn btn-danger" href="{{ context }}/cancel/{{id}}">Cancel</a>
 </form>
 
 <script type="text/javascript">
