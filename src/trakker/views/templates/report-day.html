@@ -1,6 +1,11 @@
 {% extends "trakker/views/templates/base.html" %}
 
 {% block content %}
+<ul class="nav nav-tabs">
+  <li><a href="/">Home</a></li>
+  <li class="active"><a href="/reports/today">Today</a></li>
+  <li><a href="/reports/today-aggregated">Today (aggregated)</a></li>
+</ul>
 
 <table class="table">
   <tr>
