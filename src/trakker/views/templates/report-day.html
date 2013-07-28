@@ -8,6 +8,7 @@
     <th>End</th>
     <th>Task</th>
     <th>Minutes</th>
+    <th>Actions</th>
   </tr>
   {% for task in tasks %}
   <tr>
@@ -15,6 +16,7 @@
     <td>{{ task.end }}</td>
     <td>{{ task.desc }}</td>
     <td>{{ task.duration }}</td>
+    <td><a href="/delete/{{ task.id }}" class="btn">Delete</a></td>
   </tr>
   {% endfor %}
 </table>

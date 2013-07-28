@@ -29,9 +29,9 @@
   (do (db/stop-tracking id (t/now))
       (resp/redirect "/")))
 
-(defn cancel-tracking [id]
+(defn cancel-tracking [id redirect]
   (do (db/rm-log id)
-      (resp/redirect "/")))
+      (resp/redirect redirect)))
 
 (defn report-day [dt]
   (let [tasks (map (comp db/format-dates db/calc-duration)
@@ -51,7 +51,8 @@
   (GET "/" [] (home-page))
   (POST "/" [desc] (start-tracking desc))
   (POST "/stop" [id] (stop-tracking id))
-  (GET "/cancel/:id" [id] (cancel-tracking id))
+  (GET "/cancel/:id" [id] (cancel-tracking id "/"))
+  (GET "/delete/:id" [id] (cancel-tracking id "/reports/today"))
   (GET "/reports/today" [] (report-day (t/now)))
   (GET "/reports/today-aggregated" [] (report-day-aggregated (t/now)))
   (GET "/about" [] (about-page)))
