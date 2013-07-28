@@ -60,6 +60,10 @@
           (set-fields {:end (coerce/to-timestamp dt)})
           (where {:id id})))
 
+(defn rm-log [id]
+  (delete timesheets
+          (where {:id id})))
+
 (defn timelog-day
   "Produces the seq of timesheet entries for the day d."
   [d]
@@ -106,6 +110,13 @@
     :end (when end
            (format-w-timezone end))))
 
-(defn rm-log [id]
-  (delete timesheets
-          (where {:id id})))
+(defn format-duration [{:keys [duration] :as e}]
+  (let [hours (int (/ duration 60))
+        minutes (mod duration 60)]
+    (assoc e :duration (str hours "h " minutes "m"))))
+
+(comment
+  (let [m 122
+        hours (int (/ m 60))
+        minutes (mod m 60)]
+    (str hours "h" minutes "m")))

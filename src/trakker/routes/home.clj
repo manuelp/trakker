@@ -45,7 +45,7 @@
 
 (defn report-day-aggregated [dt]
   (layout/render "report-day-aggregated.html"
-                 {:tasks (db/timelog-day-aggregated dt)}))
+                 {:tasks (map db/format-duration (db/timelog-day-aggregated dt))}))
 
 (defroutes home-routes
   (GET "/" [] (home-page))
