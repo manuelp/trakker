@@ -101,8 +101,9 @@
         sum (reduce #(assoc %1 (key %2) (sum-durations (val %2)))
                     {}
                     grouped)]
-    (reduce conj [] (map #(assoc {} :desc (key %) :duration (val %))
-                         sum))))
+    (sort-by :desc (reduce conj [] (map #(assoc {} :desc (key %) :duration (val %))
+                         sum)))))
+
 
 (defn- format-w-timezone [d]
   (tf/unparse (tf/with-zone (tf/formatters :date-hour-minute)
