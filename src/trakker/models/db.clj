@@ -41,18 +41,15 @@
       (assoc :end (if end
                     (coerce/to-timestamp end)))))
 
-(defn- timestamp->local-date-time [t]
-  (-> t
-      coerce/from-sql-date
-      coerce/to-date
-      tl/to-local-date-time))
+(defn- timestamp->date-time [t]
+  (coerce/from-sql-date t))
 
 (defn- transform-ts
   [{start :start end :end :as m}]
   (-> m
-      (assoc :start (timestamp->local-date-time start))
+      (assoc :start (timestamp->date-time start))
       (assoc :end (if end
-                    (timestamp->local-date-time end)))))
+                    (timestamp->date-time end)))))
 
 (defn log-time [timelog]
   (insert timesheets
@@ -108,54 +105,6 @@
     :start (format-w-timezone start)
     :end (when end
            (format-w-timezone end))))
-
-(comment
-  (update timesheets
-          (set-fields {:end nil})
-          (where {:id 2}))
-
-  (stop-tracking 2 (t/now))
-
-  (select timesheets)
-
-  (tl/to-local-date-time (:start (first (select timesheets (where {:id 3})))))
-
-
-  (import '[java.util.Date])
-  (import 'java.sql.Timestamp)
-
-  (-> (tl/local-now)
-      coerce/to-sql-date
-      coerce/from-sql-date
-      coerce/to-date
-      tl/to-local-date-time
-      )
-
-  (format-dates (first (timelog-day (tl/local-now))))
-
-  (map #(assoc %
-          :start (tl/to-local-date-time (:start %)))
-       (timelog-day (t/today)))
-
-  (map #(-> % :start tl/to-local-date-time)
-       (timelog-day (t/today)))
-
-  (log-time {:start (tl/local-now)
-             :desc "Or ora, le 13:24"})
-
-
-  (require '[clj-time.local :as tl])
-
-  (tl/to-local-date-time (coerce/to-timestamp (t/now)))
-
-  (timelog-day-aggregated (t/now))
-
-
-  (map rm-log (filter #(> % 2) (map :id (select timesheets))))
-
-  ((comp first vals)
-   (log-time {:desc "lsdffg"
-              :start (t/now)})))
 
 (defn rm-log [id]
   (delete timesheets
