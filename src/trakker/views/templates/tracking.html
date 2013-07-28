@@ -11,6 +11,13 @@
     <th>Start</th>
     <td>{{ start }}</td>
   </tr>
+  <tr>
+    <th>Duration</th>
+    <td>
+      <input style="width:20px;" type="number" id="duration" readOnly="true" value={{ duration }}> min</input>
+      <input style="width:20px;" type="number" id="seconds" readOnly="true" value=0> s</input>
+    </td>
+  </tr>
 </table>
 
 <form action="/stop" method="POST">
@@ -19,4 +26,20 @@
   <a class="btn btn-danger" href="/cancel/{{id}}">Cancel</a>
 </form>
 
+<script type="text/javascript">
+  console.log(Date.parse('{{start}}'));
+  var interval = setInterval(function () {
+    var elm = document.getElementById('duration');
+    elm.value = parseInt(elm.value) + 1;
+  }, 60000), intervalSeconds = setInterval(function () {
+    var elm = document.getElementById('seconds'), value = parseInt(elm.value);
+    if(value === 59)
+      seconds.value = 0;
+    else
+      seconds.value = value + 1;
+  }, 1000);
+</script>
+
 {% endblock %}
+
+
