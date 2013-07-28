@@ -2,10 +2,16 @@
 
 {% block content %}
 
-<ul>
-  <li><time>{{start|date:"dd/MM/yyyy HH:mm"}}</time></li>
-  <li>Task: {{desc}}</li>
-</ul>
+<table class="table">
+  <tr>
+    <th>Task</th>
+    <td>{{ desc }}</td>
+  </tr>
+  <tr>
+    <th>Start</th>
+    <td>{{ start }}</td>
+  </tr>
+</table>
 
 <form action="/stop" method="POST">
   <input type="hidden" name="id" value="{{id}}">

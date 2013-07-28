@@ -10,7 +10,7 @@
   (layout/render "home.html" {:error error}))
 
 (defn tracking-page [id]
-  (let [entry (db/get-entry id)]
+  (let [entry (db/format-dates (db/get-entry id))]
     (layout/render "tracking.html" entry)))
 
 (defn about-page []
