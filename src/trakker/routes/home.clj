@@ -9,10 +9,9 @@
 (defn home-page [& [error]]
   (layout/render "home.html" {:error error}))
 
-(defn tracking-page [id desc start]
-  (layout/render "tracking.html" {:id id
-                                  :desc desc
-                                  :start start}))
+(defn tracking-page [id]
+  (let [entry (db/get-entry id)]
+    (layout/render "tracking.html" entry)))
 
 (defn about-page []
   (layout/render "about.html"))
@@ -23,7 +22,7 @@
                     ; Extract fn for taking new ID
                     id (first (vals (db/log-time {:desc desc
                                                   :start start})))]
-                (tracking-page id desc start))))
+                (resp/redirect (str "/tracking/" id)))))
 
 (defn stop-tracking [id]
   (do (db/stop-tracking id (t/now))
@@ -50,6 +49,7 @@
 (defroutes home-routes
   (GET "/" [] (home-page))
   (POST "/" [desc] (start-tracking desc))
+  (GET "/tracking/:id" [id] (tracking-page id))
   (POST "/stop" [id] (stop-tracking id))
   (GET "/cancel/:id" [id] (cancel-tracking id "/"))
   (GET "/delete/:id" [id] (cancel-tracking id "/reports/today"))

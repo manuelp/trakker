@@ -73,6 +73,11 @@
                               (= (sqlfn year :start) (t/year d)))))]
     (map transform-ts (exec query))))
 
+(defn get-entry [id]
+  (first (map transform-ts (-> (select* timesheets)
+                               (where {:id id})
+                               exec))))
+
 (defn calc-duration
   "Produces a new task map with an additional :duration in minutes
   calculated using :start and :end timestamps."

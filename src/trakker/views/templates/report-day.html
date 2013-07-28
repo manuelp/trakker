@@ -21,7 +21,12 @@
     <td>{{ task.end }}</td>
     <td>{{ task.desc }}</td>
     <td>{{ task.duration }}</td>
-    <td><a href="/delete/{{ task.id }}" class="btn">Delete</a></td>
+    <td>
+      {% if not task.end %}
+      <a href="/tracking/{{ task.id }}" class="btn">Edit</a>
+      {% endif %}
+      <a href="/delete/{{ task.id }}" class="btn">Delete</a>
+    </td>
   </tr>
   {% endfor %}
 </table>
