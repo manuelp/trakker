@@ -20,7 +20,7 @@
      javax.jms/jms
      com.sun.jdmk/jmxtools
      com.sun.jmx/jmxri]]
-   [clj-time "0.5.1"]]
+   [clj-time "0.5.2-SNAPSHOT"]]
   :ring
   {:handler trakker.handler/war-handler,
    :init trakker.handler/init,

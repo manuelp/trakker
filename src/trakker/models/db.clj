@@ -3,8 +3,12 @@
         [korma.db :only (defdb)])
   (:require [trakker.models.schema :as schema]
             [clj-time.core :as t]
-            [clj-time.coerce :as coerce])
+            [clj-time.coerce :as coerce]
+            [clj-time.local :as tl]
+            [clj-time.format :as tf])
   (:import java.util.Date))
+
+(def OFFSET 2)
 
 (defdb db schema/db-spec)
 
@@ -28,8 +32,6 @@
                  (where {:id id})
                  (limit 1))))
 
-(defn- timestamp->date-time [t]
-  (coerce/from-date t))
 
 (defentity timesheets)
 
@@ -39,17 +41,22 @@
       (assoc :end (if end
                     (coerce/to-timestamp end)))))
 
+(defn- timestamp->local-date-time [t]
+  (-> t
+      coerce/from-sql-date
+      coerce/to-date
+      tl/to-local-date-time))
+
 (defn- transform-ts
   [{start :start end :end :as m}]
   (-> m
-      (assoc :start (timestamp->date-time start))
+      (assoc :start (timestamp->local-date-time start))
       (assoc :end (if end
-                    (timestamp->date-time end)))))
+                    (timestamp->local-date-time end)))))
 
 (defn log-time [timelog]
   (insert timesheets
           (values (prepare-ts timelog))))
-
 
 (defn stop-tracking [id dt]
   (update timesheets
@@ -68,9 +75,9 @@
 (defn calc-duration
   "Produces a new task map with an additional :duration in minutes
   calculated using :start and :end timestamps."
-  [entry]
-  (assoc entry
-    :duration (t/in-minutes (t/interval (:start entry) (:end entry)))))
+  [{:keys [start end] :as m}]
+  (assoc m
+    :duration (t/in-minutes (t/interval start end))))
 
 (defn sum-durations
   "Produces the sum of the durations in minutes of all the tasks in the seq."
@@ -91,6 +98,17 @@
     (reduce conj [] (map #(assoc {} :desc (key %) :duration (val %))
                          sum))))
 
+(defn- format-w-timezone [d]
+  (tf/unparse (tf/with-zone (tf/formatters :date-hour-minute)
+                (t/time-zone-for-offset OFFSET))
+              d))
+
+(defn format-dates [{:keys [start end] :as e}]
+  (assoc e
+    :start (format-w-timezone start)
+    :end (when end
+           (format-w-timezone end))))
+
 (comment
   (update timesheets
           (set-fields {:end nil})
@@ -98,18 +116,40 @@
 
   (stop-tracking 2 (t/now))
 
-  (map :id (select timesheets))
+  (select timesheets)
 
-  (let [grouped (group-by :desc (timelog-day (t/today)))]
-    (reduce #(assoc %1 (key %2) (reduce + (map :duration (map calc-duration (val %2)))))
-            {}
-            grouped))
+  (tl/to-local-date-time (:start (first (select timesheets (where {:id 3})))))
 
-  (timelog-day (t/today))
+
+  (import '[java.util.Date])
+  (import 'java.sql.Timestamp)
+
+  (-> (tl/local-now)
+      coerce/to-sql-date
+      coerce/from-sql-date
+      coerce/to-date
+      tl/to-local-date-time
+      )
+
+  (format-dates (first (timelog-day (tl/local-now))))
+
+  (map #(assoc %
+          :start (tl/to-local-date-time (:start %)))
+       (timelog-day (t/today)))
+
+  (map #(-> % :start tl/to-local-date-time)
+       (timelog-day (t/today)))
+
+  (log-time {:start (tl/local-now)
+             :desc "Or ora, le 13:24"})
+
+
+  (require '[clj-time.local :as tl])
+
+  (tl/to-local-date-time (coerce/to-timestamp (t/now)))
 
   (timelog-day-aggregated (t/now))
 
-  (select timesheets)
 
   (map rm-log (filter #(> % 2) (map :id (select timesheets))))
 

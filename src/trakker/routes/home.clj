@@ -34,14 +34,14 @@
       (resp/redirect "/")))
 
 (defn report-day [dt]
-  (let [tasks (map db/calc-duration (db/timelog-day dt))]
-    (layout/render "report-day.html"
-                   {:tasks tasks})))
+  (let [tasks (map (comp db/format-dates db/calc-duration)
+                   (db/timelog-day dt))]
+    (layout/render "report-day.html" {:tasks tasks})))
 
 (comment
   (db/timelog-day (t/now))
 
-  (map calc-duration (db/timelog-day (t/now))))
+  (map db/calc-duration (db/timelog-day (t/now))))
 
 (defn report-day-aggregated [dt]
   (layout/render "report-day-aggregated.html"

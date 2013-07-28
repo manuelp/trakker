@@ -11,8 +11,8 @@
   </tr>
   {% for task in tasks %}
   <tr>
-    <td>{{ task.start|date:"dd/MM/yyyy HH:mm" }}</td>
-    <td>{{ task.end|date:"dd/MM/yyyy HH:mm" }}</td>
+    <td>{{ task.start }}</td>
+    <td>{{ task.end }}</td>
     <td>{{ task.desc }}</td>
     <td>{{ task.duration }}</td>
   </tr>
