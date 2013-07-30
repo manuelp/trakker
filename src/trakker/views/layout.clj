@@ -1,6 +1,6 @@
 (ns trakker.views.layout
   (:use noir.request)
-  (:require [clabango.parser :as parser]
+  (:require [selmer.parser :as parser]
             [noir.session :as session]))
 
 (def template-path "trakker/views/templates/")
