@@ -29,19 +29,14 @@
   (do (db/stop-tracking id (t/now))
       (resp/redirect "/")))
 
-(defn cancel-tracking [id redirect]
+(defn cancel-tracking [id redirect-url]
   (do (db/rm-log id)
-      (resp/redirect redirect)))
+      (resp/redirect redirect-url)))
 
 (defn report-day [dt]
   (let [tasks (map (comp fmt/format-dates db/calc-duration)
                    (db/timelog-day dt))]
     (layout/render "report-day.html" {:tasks tasks})))
-
-(comment
-  (db/timelog-day (t/now))
-
-  (map db/calc-duration (db/timelog-day (t/now))))
 
 (defn report-day-aggregated [dt]
   (layout/render "report-day-aggregated.html"

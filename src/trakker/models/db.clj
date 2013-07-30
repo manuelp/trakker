@@ -99,9 +99,3 @@
                     grouped)]
     (sort-by :desc (reduce conj [] (map #(assoc {} :desc (key %) :duration (val %))
                          sum)))))
-
-(comment
-  (let [m 122
-        hours (int (/ m 60))
-        minutes (mod m 60)]
-    (str hours "h" minutes "m")))
