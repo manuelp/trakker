@@ -3,12 +3,8 @@
         [korma.db :only (defdb)])
   (:require [trakker.models.schema :as schema]
             [clj-time.core :as t]
-            [clj-time.coerce :as coerce]
-            [clj-time.local :as tl]
-            [clj-time.format :as tf])
+            [clj-time.coerce :as coerce])
   (:import java.util.Date))
-
-(def OFFSET 2)
 
 (defdb db schema/db-spec)
 
@@ -103,23 +99,6 @@
                     grouped)]
     (sort-by :desc (reduce conj [] (map #(assoc {} :desc (key %) :duration (val %))
                          sum)))))
-
-
-(defn- format-w-timezone [d]
-  (tf/unparse (tf/with-zone (tf/formatters :date-hour-minute)
-                (t/time-zone-for-offset OFFSET))
-              d))
-
-(defn format-dates [{:keys [start end] :as e}]
-  (assoc e
-    :start (format-w-timezone start)
-    :end (when end
-           (format-w-timezone end))))
-
-(defn format-duration [{:keys [duration] :as e}]
-  (let [hours (int (/ duration 60))
-        minutes (mod duration 60)]
-    (assoc e :duration (str hours "h " minutes "m"))))
 
 (comment
   (let [m 122

@@ -3,6 +3,7 @@
   (:require [trakker.views.layout :as layout]
             [trakker.util :as util]
             [trakker.models.db :as db]
+            [trakker.models.format :as fmt]
             [clj-time.core :as t]
             [noir.response :as resp]))
 
@@ -10,7 +11,7 @@
   (layout/render "home.html" {:error error}))
 
 (defn tracking-page [id]
-  (let [entry ((comp db/format-dates db/calc-duration) (db/get-entry id))]
+  (let [entry ((comp fmt/format-dates db/calc-duration) (db/get-entry id))]
     (layout/render "tracking.html" entry)))
 
 (defn about-page []
@@ -33,7 +34,7 @@
       (resp/redirect redirect)))
 
 (defn report-day [dt]
-  (let [tasks (map (comp db/format-dates db/calc-duration)
+  (let [tasks (map (comp fmt/format-dates db/calc-duration)
                    (db/timelog-day dt))]
     (layout/render "report-day.html" {:tasks tasks})))
 
@@ -44,7 +45,7 @@
 
 (defn report-day-aggregated [dt]
   (layout/render "report-day-aggregated.html"
-                 {:tasks (map db/format-duration (db/timelog-day-aggregated dt))}))
+                 {:tasks (map fmt/format-duration (db/timelog-day-aggregated dt))}))
 
 (defroutes home-routes
   (GET "/" [] (home-page))
