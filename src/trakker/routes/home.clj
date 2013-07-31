@@ -7,12 +7,11 @@
             [clj-time.core :as t]
             [noir.response :as resp]))
 
-;; Definition of the tabs to visualize (title, link)
-; TODO It'd be better to use a key and a vector or map with properties.
-(def tabs {:home {:title "Home" :url "/"}
-           :today {:title "Today" :url "/reports/today"}
-           :today-aggregated {:title "Today (aggregated)" :url "/reports/today-aggregated"}
-           :about {:title "About" :url "/about"}})
+;; Definition of the tabs to visualize (title, link). Tabs will be displayed in the insertion order declared here.
+(def tabs (array-map :home {:title "Home" :url "/"}
+                     :today {:title "Today" :url "/reports/today"}
+                     :today-aggregated {:title "Today (aggregated)" :url "/reports/today-aggregated"}
+                     :about {:title "About" :url "/about"}))
 
 (defn gen-tabs
   "Transform a map {title link} to {title [link active?]},
@@ -20,7 +19,7 @@
   the corresponding tabs."
   [tabs active-tab]
   (letfn [(active? [entry] (= (key entry) active-tab))]
-    (reduce #(cons (assoc (val %2) :active (active? %2)) %1)
+    (reduce #(conj %1 (assoc (val %2) :active (active? %2)))
             []
             tabs)))
 
