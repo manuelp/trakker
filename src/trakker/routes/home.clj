@@ -7,15 +7,33 @@
             [clj-time.core :as t]
             [noir.response :as resp]))
 
+;; Definition of the tabs to visualize (title, link)
+; TODO It'd be better to use a key and a vector or map with properties.
+(def tabs {:home {:title "Home" :url "/"}
+           :today {:title "Today" :url "/reports/today"}
+           :today-aggregated {:title "Today (aggregated)" :url "/reports/today-aggregated"}
+           :about {:title "About" :url "/about"}})
+
+(defn gen-tabs
+  "Transform a map {title link} to {title [link active?]},
+  adding a boolean to tell to the view template how to render
+  the corresponding tabs."
+  [tabs active-tab]
+  (letfn [(active? [entry] (= (key entry) active-tab))]
+    (reduce #(cons (assoc (val %2) :active (active? %2)) %1)
+            []
+            tabs)))
+
 (defn home-page [& [error]]
-  (layout/render "home.html" {:error error}))
+  (layout/render "home.html" {:error error
+                              :tabs (gen-tabs tabs :home)}))
 
 (defn tracking-page [id]
   (let [entry ((comp fmt/format-dates db/calc-duration) (db/get-entry id))]
     (layout/render "tracking.html" entry)))
 
 (defn about-page []
-  (layout/render "about.html"))
+  (layout/render "about.html" {:tabs (gen-tabs tabs :about)}))
 
 (defn start-tracking [desc]
   (cond (empty? desc) (home-page "Description can't be empty!")
@@ -36,11 +54,13 @@
 (defn report-day [dt]
   (let [tasks (map (comp fmt/format-dates db/calc-duration)
                    (db/timelog-day dt))]
-    (layout/render "report-day.html" {:tasks tasks})))
+    (layout/render "report-day.html" {:tasks tasks
+                                      :tabs (gen-tabs tabs :today)})))
 
 (defn report-day-aggregated [dt]
   (layout/render "report-day-aggregated.html"
-                 {:tasks (map fmt/format-duration (db/timelog-day-aggregated dt))}))
+                 {:tasks (map fmt/format-duration (db/timelog-day-aggregated dt))
+                  :tabs (gen-tabs tabs :today-aggregated)}))
 
 (defroutes home-routes
   (GET "/" [] (home-page))
