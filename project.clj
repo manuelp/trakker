@@ -6,12 +6,12 @@
    [lib-noir "0.6.6"]
    [compojure "1.1.5"]
    [ring-server "0.2.8"]
-   [selmer "0.2.4"]
-   [com.taoensso/timbre "2.1.2"]
+   [selmer "0.3.1"]
+   [com.taoensso/timbre "2.4.1"]
    [com.postspectacular/rotor "0.1.0"]
    [com.taoensso/tower "1.7.1"]
-   [markdown-clj "0.9.28"]
-   [com.h2database/h2 "1.3.172"]
+   [markdown-clj "0.9.29"]
+   [com.h2database/h2 "1.3.173"]
    [korma "0.3.0-RC5"]
    [log4j
     "1.2.17"
@@ -30,7 +30,7 @@
    {:ring
     {:open-browser? false, :stacktraces? false, :auto-reload? false}},
    :dev
-   {:dependencies [[ring-mock "0.1.5"] [ring/ring-devel "1.1.8"]]}}
+   {:dependencies [[ring-mock "0.1.5"] [ring/ring-devel "1.2.0"]]}}
   :url "https://github.com/manuelp/trakker"
   :plugins
   [[lein-ring "0.8.5"]]
