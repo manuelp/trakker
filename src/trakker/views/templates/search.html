@@ -1,0 +1,13 @@
+{% extends "trakker/views/templates/base.html" %}
+
+{% block content %}
+
+{% include "trakker/views/templates/tabs.html" %}
+
+<form action="{{context}}/search" method="POST">
+    Pattern:
+  <input type="text" name="pattern">
+  <input type="submit" class="btn btn-primary" value="Search">
+</form>
+
+{% endblock %}

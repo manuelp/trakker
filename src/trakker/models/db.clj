@@ -99,3 +99,10 @@
                     grouped)]
     (sort-by :desc (reduce conj [] (map #(assoc {} :desc (key %) :duration (val %))
                          sum)))))
+
+(defn tasks-by-desc-pattern
+  [pattern]
+  (let [query (-> (select* timesheets)
+                  (where {:desc [like pattern]})
+                  (order :start :ASC))]
+    (map transform-ts (exec query))))

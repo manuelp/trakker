@@ -11,6 +11,7 @@
 (def tabs (array-map :home {:title "Home" :url "/"}
                      :today {:title "Today" :url "/reports/today"}
                      :today-aggregated {:title "Today (aggregated)" :url "/reports/today-aggregated"}
+                     :search {:title "Search" :url "/search"}
                      :about {:title "About" :url "/about"}))
 
 (defn gen-tabs
@@ -61,6 +62,15 @@
                  {:tasks (map fmt/format-duration (db/timelog-day-aggregated dt))
                   :tabs (gen-tabs tabs :today-aggregated)}))
 
+(defn search-page []
+  (layout/render "search.html" {:tabs (gen-tabs tabs :search)}))
+
+(defn search-results [pattern]
+  (let [tasks (map (comp fmt/format-dates db/calc-duration)
+                   (db/tasks-by-desc-pattern pattern))]
+    (layout/render "report-day.html" {:tasks tasks
+                                      :tabs (gen-tabs tabs :search)})))
+
 (defroutes home-routes
   (GET "/" [] (home-page))
   (POST "/" [desc] (start-tracking desc))
@@ -68,6 +78,10 @@
   (POST "/stop" [id] (stop-tracking id))
   (GET "/cancel/:id" [id] (cancel-tracking id "/"))
   (GET "/delete/:id" [id] (cancel-tracking id "/reports/today"))
+
+  (GET "/search" [] (search-page))
+  (POST "/search" [pattern] (search-results pattern))
+
   (GET "/reports/today" [] (report-day (t/now)))
   (GET "/reports/today-aggregated" [] (report-day-aggregated (t/now)))
   (GET "/about" [] (about-page)))
