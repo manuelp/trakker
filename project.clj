@@ -3,14 +3,14 @@
   "0.2.0-SNAPSHOT"
   :dependencies
   [[org.clojure/clojure "1.5.1"]
-   [lib-noir "0.6.6"]
+   [lib-noir "0.6.8"]
    [compojure "1.1.5"]
    [ring-server "0.2.8"]
-   [selmer "0.3.1"]
-   [com.taoensso/timbre "2.4.1"]
+   [selmer "0.4.2"]
+   [com.taoensso/timbre "2.6.1"]
    [com.postspectacular/rotor "0.1.0"]
    [com.taoensso/tower "1.7.1"]
-   [markdown-clj "0.9.29"]
+   [markdown-clj "0.9.31"]
    [com.h2database/h2 "1.3.173"]
    [korma "0.3.0-RC5"]
    [log4j
@@ -20,7 +20,7 @@
      javax.jms/jms
      com.sun.jdmk/jmxtools
      com.sun.jmx/jmxri]]
-   [clj-time "0.5.2-SNAPSHOT"]]
+   [clj-time "0.6.0"]]
   :ring
   {:handler trakker.handler/war-handler,
    :init trakker.handler/init,
