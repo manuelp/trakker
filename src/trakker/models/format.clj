@@ -23,9 +23,8 @@
            (format-w-timezone end))))
 
 (defn format-duration
-  "Produces a new entry map, with the :duration value in minutes formatted in a string
-  in the format 'Xh Ym'."
+  "Produces a new entry map, with the :duration value in minutes associated to the :formatted-duration key formatted as 'Xh Ym'."
   [{:keys [duration] :as e}]
   (let [hours (int (/ duration 60))
         minutes (mod duration 60)]
-    (assoc e :duration (str hours "h " minutes "m"))))
+    (assoc e :formatted-duration (str hours "h " minutes "m"))))

@@ -78,8 +78,8 @@
   "Produces a new task map with an additional :duration in minutes
   calculated using :start and :end timestamps."
   [{:keys [start end] :as m}]
-  (assoc m
-    :duration (t/in-minutes (t/interval start end))))
+  (let [minutes (t/in-minutes (t/interval start end))]
+    (assoc m :duration minutes)))
 
 (defn sum-durations
   "Produces the sum of the durations in minutes of all the tasks in the seq."

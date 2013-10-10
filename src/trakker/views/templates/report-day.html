@@ -9,6 +9,7 @@
     <th>Start</th>
     <th>End</th>
     <th>Task</th>
+    <th>Duration</th>
     <th>Minutes</th>
     <th>Actions</th>
   </tr>
@@ -17,6 +18,7 @@
     <td>{{ task.start }}</td>
     <td>{{ task.end }}</td>
     <td>{{ task.desc }}</td>
+    <td>{{ task.formatted-duration }}</td>
     <td>{{ task.duration }}</td>
     <td>
       {% if not task.end %}

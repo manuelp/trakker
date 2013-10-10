@@ -52,7 +52,9 @@
       (resp/redirect redirect-url)))
 
 (defn report-day [dt]
-  (let [tasks (map (comp fmt/format-dates db/calc-duration)
+  (let [tasks (map (comp fmt/format-duration
+                         fmt/format-dates
+                         db/calc-duration)
                    (db/timelog-day dt))]
     (layout/render "report-day.html" {:tasks tasks
                                       :tabs (gen-tabs tabs :today)})))
