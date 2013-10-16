@@ -20,7 +20,10 @@
      javax.jms/jms
      com.sun.jdmk/jmxtools
      com.sun.jmx/jmxri]]
-   [clj-time "0.6.0"]]
+   [clj-time "0.6.0"]
+   [incanter/incanter-core "1.5.4"]
+   [incanter/incanter-charts "1.5.4"]
+   [incanter/incanter-svg "1.5.4"]]
   :ring
   {:handler trakker.handler/war-handler,
    :init trakker.handler/init,

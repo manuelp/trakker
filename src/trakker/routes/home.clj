@@ -4,6 +4,7 @@
             [trakker.util :as util]
             [trakker.models.db :as db]
             [trakker.models.format :as fmt]
+            [trakker.views.charting :as charts]
             [clj-time.core :as t]
             [noir.response :as resp]))
 
@@ -62,6 +63,10 @@
 (defn report-day [dt]
   (let [tasks (map post-process
                    (db/timelog-day dt))]
+    (charts/save-svg-image "Today"
+                           (map :desc tasks)
+                           (map :duration tasks)
+                           "resources/public/img/today.svg")
     (layout/render "report-day.html" {:tasks tasks
                                       :tabs (gen-tabs tabs :today)})))
 

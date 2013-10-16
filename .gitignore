@@ -10,3 +10,4 @@ pom.xml
 *.log
 resources/public/*.db
 .#*
+resources/public/img/today.svg

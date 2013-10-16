@@ -45,3 +45,8 @@ body {
 .container .footer-text {
     margin: 20px 0;
 }
+
+.diagram {
+    width: 500px;
+    height: 400px;
+}
