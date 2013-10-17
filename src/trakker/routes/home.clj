@@ -63,17 +63,18 @@
 (defn report-day [dt]
   (let [tasks (map post-process
                    (db/timelog-day dt))]
-    (charts/save-svg-image "Today"
-                           (map :desc tasks)
-                           (map :duration tasks)
-                           "resources/public/img/today.svg")
     (layout/render "report-day.html" {:tasks tasks
                                       :tabs (gen-tabs tabs :today)})))
 
 (defn report-day-aggregated [dt]
-  (layout/render "report-day-aggregated.html"
-                 {:tasks (map fmt/format-duration (db/timelog-day-aggregated dt))
-                  :tabs (gen-tabs tabs :today-aggregated)}))
+  (let [tasks (map fmt/format-duration (db/timelog-day-aggregated dt))]
+    (charts/save-svg-image "Today"
+                           (map :desc tasks)
+                           (map :duration tasks)
+                           "resources/public/img/today.svg")
+    (layout/render "report-day-aggregated.html"
+                   {:tasks tasks
+                    :tabs (gen-tabs tabs :today-aggregated)})))
 
 (defn search-page []
   (layout/render "search.html" {:tabs (gen-tabs tabs :search)}))
