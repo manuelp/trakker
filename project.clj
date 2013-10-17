@@ -6,7 +6,7 @@
    [lib-noir "0.7.1"]
    [compojure "1.1.5"]
    [ring-server "0.3.0"]
-   [selmer "0.4.4"]
+   [selmer "0.4.6"]
    [com.taoensso/timbre "2.6.2"]
    [com.postspectacular/rotor "0.1.0"]
    [com.taoensso/tower "1.7.1"]
@@ -32,8 +32,10 @@
   {:production
    {:ring
     {:open-browser? false, :stacktraces? false, :auto-reload? false}},
-   :dev
-   {:dependencies [[ring-mock "0.1.5"] [ring/ring-devel "1.2.0"]]}}
+   :dev {:dependencies [[ring-mock "0.1.5"]
+                        [ring/ring-devel "1.2.0"]
+                        [org.clojure/tools.namespace "0.2.4"]]
+         :source-paths ["dev"]}}
   :url "https://github.com/manuelp/trakker"
   :plugins
   [[lein-ring "0.8.5"]]
