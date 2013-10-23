@@ -55,25 +55,33 @@
 (defn- post-process
   "Calculate duration in minutes, and format some things (duration and dates)."
   [event]
-  ((comp fmt/format-duration
-          fmt/format-dates
-          db/calc-duration)
+  ((comp fmt/add-formatted-duration
+         fmt/format-dates
+         db/calc-duration)
    event))
+
+(defn- total-duration [tasks]
+  (reduce + (map :duration tasks)))
 
 (defn report-day [dt]
   (let [tasks (map post-process
-                   (db/timelog-day dt))]
+                   (db/timelog-day dt))
+        total (fmt/format-duration (total-duration tasks))]
     (layout/render "report-day.html" {:tasks tasks
+                                      :total total
                                       :tabs (gen-tabs tabs :today)})))
 
 (defn report-day-aggregated [dt]
-  (let [tasks (map fmt/format-duration (db/timelog-day-aggregated dt))]
+  (let [tasks (map fmt/add-formatted-duration
+                   (db/timelog-day-aggregated dt))
+        total (fmt/format-duration (total-duration tasks))]
     (charts/save-svg-image "Today"
                            (map :desc tasks)
                            (map :duration tasks)
                            "resources/public/img/today.svg")
     (layout/render "report-day-aggregated.html"
                    {:tasks tasks
+                    :total total
                     :tabs (gen-tabs tabs :today-aggregated)})))
 
 (defn search-page []
